@@ -1,7 +1,7 @@
 const stream = require('stream');
 const crypto = require('crypto');
 const debug = require('debug');
-const Loader = require('@kuu/parallel-fetch');
+const Loader = require('parallel-fetch');
 const HLS = require('hls-parser');
 const utils = require('./utils');
 
@@ -34,7 +34,9 @@ function getUrl(url, base) {
 
 class ReadStream extends stream.Readable {
   constructor(url, options) {
-    super({objectMode: true});
+    super({
+      objectMode: true
+    });
     this.loader = new Loader(options);
     this.state = STATE_NO_PLAYLIST;
     this.url = url;
@@ -180,7 +182,9 @@ class ReadStream extends stream.Readable {
 
   _loadPlaylist(url) {
     this._INCREMENT();
-    this.loader.load(url, {noCache: true}, (err, result) => {
+    this.loader.load(url, {
+      noCache: true
+    }, (err, result) => {
       this._DECREMENT();
       if (err) {
         return this._emit('error', err);
@@ -233,7 +237,9 @@ class ReadStream extends stream.Readable {
 
   _loadSegment(playlist, segment) {
     this._INCREMENT();
-    this.loader.load(getUrl(segment.uri, playlist.uri), {readAsBuffer: true}, (err, result) => {
+    this.loader.load(getUrl(segment.uri, playlist.uri), {
+      readAsBuffer: true
+    }, (err, result) => {
       this._DECREMENT();
       if (err) {
         return this._emit('error', err);
@@ -288,7 +294,9 @@ class ReadStream extends stream.Readable {
 
   _loadKey(playlist, key, cb) {
     this._INCREMENT();
-    this.loader.load(getUrl(key.uri, playlist.uri), {readAsBuffer: true}, (err, result) => {
+    this.loader.load(getUrl(key.uri, playlist.uri), {
+      readAsBuffer: true
+    }, (err, result) => {
       this._DECREMENT();
       if (err) {
         return this._emit('error', err);
@@ -300,7 +308,9 @@ class ReadStream extends stream.Readable {
 
   _loadMap(playlist, map, cb) {
     this._INCREMENT();
-    this.loader.load(getUrl(map.uri, playlist.uri), {readAsBuffer: true}, (err, result) => {
+    this.loader.load(getUrl(map.uri, playlist.uri), {
+      readAsBuffer: true
+    }, (err, result) => {
       this._DECREMENT();
       if (err) {
         return this._emit('error', err);
